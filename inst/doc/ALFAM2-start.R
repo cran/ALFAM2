@@ -1,4 +1,4 @@
-## ----include=FALSE, cache=FALSE--------------------------------
+## ---- include=FALSE, cache=FALSE-------------------------------
 library(knitr)
 #opts_chunk$set(cache=FALSE,tidy=FALSE,highlight=FALSE)
 knitr::opts_chunk$set(fig.width=12, fig.height=8, out.width='100%', out.height='100%') 
@@ -6,13 +6,13 @@ opts_chunk$set(cache = FALSE, tidy = FALSE, fig.align = "center")
 library(ALFAM2)
   options(width=65)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  install.packages('ALFAM2')
 
 ## --------------------------------------------------------------
 library(ALFAM2)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  vignette("ALFAM2-start")
 
 ## --------------------------------------------------------------
@@ -21,7 +21,7 @@ packageVersion("ALFAM2")
 ## --------------------------------------------------------------
 args(alfam2)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  ?alfam2
 
 ## --------------------------------------------------------------
@@ -44,6 +44,18 @@ pred1 <- alfam2(dat1, app.name = 'TAN.app', time.name = 'ctime')
 
 ## --------------------------------------------------------------
 print(pred1)
+
+## --------------------------------------------------------------
+dat1b <- data.frame(ctime = 168, TAN.app = 50, man.dm = 8, 
+                   air.temp = 20, wind.sqrt = 2, 
+                   app.mthd = 'Broadcast')
+print(dat1b)
+
+## --------------------------------------------------------------
+pred1b <- alfam2(dat1, app.name = 'TAN.app', time.name = 'ctime')
+
+## --------------------------------------------------------------
+all.equal(pred1, pred1b)
 
 ## --------------------------------------------------------------
 dat2 <- dat1
@@ -153,11 +165,11 @@ set.seed(1201)
 dat7 <- data.frame(ctime = 0:84*2, TAN.app = 100, man.dm = 8, 
                    air.temp = 7 + 7*sin(0:84*2 * 2*pi/24) + 
                               rnorm(85, 0, 2), 
-                   wind.sqrt = sqrt(10^(0.5 + 0.4*sin(0:84*2 * 2*pi/24)) + 
-                              rnorm(85, 0, 0.12)), 
+                   wind.sqrt = sqrt(1.5 + 0.4*sin(0:84*2 * 2*pi/24)) + 
+                              rnorm(85, 0, 0.12), 
                    app.mthd = 'ts')
 plot(air.temp ~ ctime, data = dat7, type = 's', col = 'gray45')
-plot(wind.sqrt ~ ctime, data = dat7, type = 's', col = 'blue')
+plot(wind.sqrt^2 ~ ctime, data = dat7, type = 's', col = 'blue')
 
 ## --------------------------------------------------------------
 pred7 <- alfam2(dat7, app.name = 'TAN.app', time.name = 'ctime',
@@ -194,7 +206,7 @@ plot(j ~ ctime, data = pred8, type = 'S', col = 'red',
      xlab = 'Time (h)', ylab = 'Average flux (kg/ha-h)')
 abline(v = 6.5, col = 'blue', lty = 2)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  set.seed(0812)
 #  dat9 <- expand.grid(field = 1:1000, ct = 1:168,
 #                      TAN.app = 100, man.dm = 8,
@@ -204,54 +216,54 @@ abline(v = 6.5, col = 'blue', lty = 2)
 #  
 #  dat9$air.temp <- 7 + 7*sin(dat9$ct * 2 * pi / 24) +
 #                   rnorm(1000, 0, 2)
-#  dat9$wind.sqrt <- sqrt(10^(0.5 + 0.4*sin(dat9$ct * 2 * 2 * pi / 24) +
-#                         rnorm(1000, 0, 0.1)))
+#  dat9$wind.sqrt <- sqrt(1.5 + 0.4*sin(dat9$ct * 2 * 2 * pi / 24)) +
+#                         rnorm(1000, 0, 0.1)
 #  dat9 <- dat9[order(dat9$field, dat9$ct), ]
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  head(dat9)
 #  dim(dat9)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  system.time(
 #    pred9 <- alfam2(dat9, app.name = 'TAN.app', time.name = 'ct',
 #                    group = 'field', warn = FALSE)
 #  )
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  pred9sub <- subset(pred9, field %in% 1:100)
 #  pred9sub <- pred9sub[order(pred9sub$field), ]
 #  pred9sub[pred9sub$ct == 168, c('er', 'j')] <- NA
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  plot(j ~ ct, data = pred9sub, type = 'S', col = 'red',
 #       xlab = 'Time (h)', ylab = 'Average flux (kg/ha-h)')
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  system.time(
 #    alfam2(dat9, app.name = 'TAN.app', time.name = 'ct',
 #           group = 'field', check = FALSE, warn = FALSE)
 #  )
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  dat9b <- dat9
 #  dat9b$incorp <- 'shallow'
 #  dat9b$t.incorp <- 4
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  system.time(
 #    pred9b <- alfam2(dat9b, app.name = 'TAN.app', time.name = 'ct',
 #                     time.incorp = "t.incorp", group = 'field',
 #                     warn = FALSE)
 #  )
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  dat9c <- alfam2(dat9b, app.name = 'TAN.app', time.name = 'ct',
 #                  time.incorp = 't.incorp', group = 'field',
 #                  warn = FALSE, value = 'incorp')
 #  head(dat9c)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  system.time(
 #    pred9c <- alfam2(dat9c, app.name = 'TAN.app', time.name = 'ct',
 #                     time.incorp = "t.incorp", group = 'field',
@@ -259,28 +271,28 @@ abline(v = 6.5, col = 'blue', lty = 2)
 #                     check = FALSE)
 #  )
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  head(pred9b)
 #  head(pred9c)
 #  all.equal(pred9b$e, pred9c$e)
 
 ## --------------------------------------------------------------
 set.seed(2609)
-dat7 <- data.frame(ctime = 0:84*2, TAN.app = 100, man.dm = 8, 
+dat10 <- data.frame(ctime = 0:84*2, TAN.app = 100, man.dm = 8, 
                    air.temp = 7 + 7*sin(0:84*2 * 2*pi/24) + 
                               rnorm(85, 0, 2), 
-                   wind.sqrt = 10^(0.5 + 0.4*sin(0:84*2 * 2*pi/24) + 
-                              rnorm(85, 0, 0.12)), 
+                   wind.sqrt = sqrt(1.5 + 0.4*sin(0:84*2 * 2*pi/24)) + 
+                              rnorm(85, 0, 0.12), 
                    app.mthd = 'bsth')
 
 
 ## --------------------------------------------------------------
-pred7 <- alfam2(dat7, app.name = 'TAN.app', time.name = 'ctime',
+pred10 <- alfam2(dat10, app.name = 'TAN.app', time.name = 'ctime',
                    warn = FALSE)
-head(pred7)
+head(pred10)
 
 ## --------------------------------------------------------------
-predci1 <- alfam2(dat7, app.name = 'TAN.app', time.name = 'ctime', 
+predci1 <- alfam2(dat10, app.name = 'TAN.app', time.name = 'ctime', 
                   warn = FALSE, conf.int = 0.90)
 head(predci1)
 
@@ -291,26 +303,26 @@ lines(er.lwr ~ ctime, data = predci1, type = 'l', col = 'blue')
 lines(er.upr ~ ctime, data = predci1, type = 'l', col = 'red')
 
 ## --------------------------------------------------------------
-predci2 <- alfam2(dat7, app.name = 'TAN.app', time.name = 'ctime', 
+predci2 <- alfam2(dat10, app.name = 'TAN.app', time.name = 'ctime', 
                   warn = FALSE, conf.int = 0.90, var.ci = c('er', 'j', 'r1'))
 head(predci2)
 
 ## --------------------------------------------------------------
-dat12 <- data.frame(ctime = 168, TAN.app = 50, 
+dat11 <- data.frame(ctime = 168, TAN.app = 50, 
                     app.mthd = 'bc', 
                     man.dm = 1:10, air.temp = 20, wind.sqrt = 2) 
 
 ## --------------------------------------------------------------
 
-predci3 <- alfam2(dat12, app.name = 'TAN.app', time.name = 'ctime', 
+predci3 <- alfam2(dat11, app.name = 'TAN.app', time.name = 'ctime', 
                   group = 'man.dm', conf.int = 0.90)
 print(predci3)
 
 ## --------------------------------------------------------------
-plot(dat12$man.dm, predci3$er, type = 'o', 
+plot(dat11$man.dm, predci3$er, type = 'o', 
      ylim = c(0, max(predci3$er.upr)))
-lines(dat12$man.dm, predci3$er.lwr, col = 'blue')
-lines(dat12$man.dm, predci3$er.upr, col = 'blue')
+lines(dat11$man.dm, predci3$er.lwr, col = 'blue')
+lines(dat11$man.dm, predci3$er.upr, col = 'blue')
 
 ## --------------------------------------------------------------
 dim(alfam2pars03var)
@@ -343,10 +355,10 @@ preduc2 <- alfam2(datuc2, app.name = 'TAN.app',
                   conf.int = 0.9)
 print(preduc2)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  write.csv(pred7, 'pred7.csv', row.names = FALSE)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  library(data.table)
 #  library(ALFAM2)
 #  dat1b <- data.table(ctime = 168, TAN.app = 50, man.dm = 8,
@@ -354,14 +366,14 @@ print(preduc2)
 #                     app.mthd = 'bc')
 #  dat1b
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  pred1b <- alfam2(dat1b, app.name = 'TAN.app', time.name = 'ctime')
 #  pred1b
 #  class(pred1b)
 #  setDT(pred1b)
 #  class(pred1b)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  library(tibble)
 #  dat1c <- tibble(ctime = 168, TAN.app = 50, man.dm = 8,
 #                     air.temp = 20, wind.sqrt = 2,
@@ -369,68 +381,9 @@ print(preduc2)
 #  dat1c
 #  class(dat1c)
 
-## ----eval=FALSE------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------
 #  pred1c <- alfam2(dat1c, app.name = 'TAN.app', time.name = 'ctime')
 #  class(pred1c)
 #  pred1c <- as_tibble(pred1c)
 #  class(pred1c)
-
-## ----error=TRUE------------------------------------------------
-dat6b <- dat6
-dat6b[3, 'wind.sqrt'] <- NA
-
-alfam2(dat6b, app.name = "TAN.app", time.name = "ctime", 
-       time.incorp = "t.incorp", group = "scenario", 
-       check = TRUE, warn = FALSE)
-
-## ----error=TRUE------------------------------------------------
-pred0 <- alfam2(dat6, app.name = "TAN.app", time.name = "ctim", 
-       time.incorp = "t.incorp", group = "scenario")
-
-## ----error=TRUE------------------------------------------------
-dat6c <- dat6
-dat6c[1, 'ctime'] <- -10
-
-pred0 <- alfam2(dat6c, app.name = "TAN.app", time.name = "ctime", 
-       time.incorp = "t.incorp", group = "scenario", warn = TRUE)
-
-## ----error=TRUE------------------------------------------------
-dat7 <- data.frame(ctime = 1:10, TAN.app = 100)
-pred0 <- alfam2(dat7, app.name = "TAN.app", time.name = "ctime")
-
-## ----error=TRUE------------------------------------------------
-pred0 <- alfam2(dat6, pars = c(int.f0 = -1, int.r1 = 0), app.name = "TAN.app", 
-                time.name = "ctime", time.incorp = "t.incorp", 
-                group = "scenario")
-
-## ----error=TRUE------------------------------------------------
-alfam2(dat6, app.name = "TAN.app", time.name = "ctim", 
-       time.incorp = TRUE, group = "scenario")
-
-alfam2(dat6, app.name = 95, time.name = "ctim", 
-       time.incorp = TRUE, group = "scenario")
-
-alfam2(c(ct = 10, man.dm = 2), app.name = 'TAN.app', time.name = "ctim", 
-       time.incorp = 6, group = "scenario")
-
-## ----error=TRUE------------------------------------------------
-alfam2(dat6, app.name = "TAN.app", time.name = "ctim", 
-       time.incorp = TRUE, group = "scenario", check = FALSE)
-
-## ----error=TRUE------------------------------------------------
-pred0 <- alfam2(dat6, app.name = "TAN.app", time.name = "ctim", 
-                time.incorp = "t.incorp", group = "scenario", 
-                value = "something else")
-
-## ----error=TRUE------------------------------------------------
-datnull <- data.frame()
-pred0 <- alfam2(datnull, app.name = "TAN.app", time.name = "ctim", 
-                time.incorp = "t.incorp", group = "scenario") 
-
-## ----error=TRUE------------------------------------------------
-dat6c <- dat6
-dat6c$"__r1" <- 0
-pred0 <- alfam2(dat6c, app.name = "TAN.app", 
-                time.name = "ctime", time.incorp = "t.incorp", 
-                group = "scenario")
 

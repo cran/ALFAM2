@@ -1,8 +1,8 @@
 Package: ALFAM2
 Type: Package
 Title: Dynamic Model of Ammonia Emission from Field-Applied Manure
-Version: 4.0
-Date: 2024-06-04
+Version: 4.1.3
+Date: 2024-06-17
 Authors@R: c(person("Sasha D.", "Hafner", role = c("aut", "cre"), email = "sasha.hafner@bce.au.dk"),
              person("Christoph", "Haeni", role = "aut"),
              person("Roland", "Fuss", role = "aut", email = "roland.fuss@thuenen.de"),
@@ -21,7 +21,7 @@ VignetteBuilder: knitr
 LazyData: true
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2024-06-04 18:40:28 UTC; sasha
+Packaged: 2024-06-17 08:43:18 UTC; sasha
 Author: Sasha D. Hafner [aut, cre],
   Christoph Haeni [aut],
   Roland Fuss [aut],
@@ -29,4 +29,4 @@ Author: Sasha D. Hafner [aut, cre],
   Johanna Pedersen [ctb],
   Petersen Valdemar [ctb]
 Repository: CRAN
-Date/Publication: 2024-06-05 15:20:02 UTC
+Date/Publication: 2024-06-17 09:10:02 UTC
