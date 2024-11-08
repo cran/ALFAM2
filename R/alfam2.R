@@ -89,7 +89,7 @@ alfam2 <- function(
     checkArgClassValue(dat, expected.class = 'data.frame')
     checkArgClassValue(pars, expected.class = c('numeric', 'list'), allow.na = FALSE)
     checkArgClassValue(add.pars, expected.class = c('numeric', 'list', 'NULL'), allow.na = FALSE)
-    checkArgClassValue(app.name, expected.class = 'character', allow.na = FALSE)
+    checkArgClassValue(app.name, expected.class = c('character', 'NULL'), allow.na = TRUE)
     checkArgClassValue(time.name, expected.class = 'character', allow.na = FALSE)
     checkArgClassValue(time.incorp, expected.class = c('character', 'numeric', 'integer', 'NULL'))
     checkArgClassValue(group, expected.class = c('character', 'NULL'))
@@ -113,12 +113,23 @@ alfam2 <- function(
       }
     }
 
+    # Relative emission only if app.name is missing
+    if (is.null(app.name) || is.na(app.name) || !app.name %in% names(dat)) {
+      if (warn) {
+        warning('Argument app.name is missing or dat is missing column of given name.\n    So function will return relative emission only.\n')
+      }
+      relonly <- TRUE
+      dat$`__appplaceholder94` <- 1
+      app.name <- '__appplaceholder94'
+    }
+
+    # Check that arguments that should be column names are actually present in dat
     if (!time.name %in% names(dat)) {
       stop(paste0('time.name argument you specified (', time.name, ') is not present in dat data frame, which has these columns: ', paste(names(dat), collapse = ', ')))
     }
 
-    if (!app.name %in% names(dat)) {
-      stop(paste0('app.name argument you specified (', app.name, ') is not present in dat data frame, which has these columns: ', paste(names(dat), collapse = ', ')))
+    if (!all(pass.col %in% names(dat))) {
+      stop(paste0('One or some values of pass.col you specified (', paste(pass.col, collapse = ', '), ') is not present in dat data frame, which has these columns: ', paste(names(dat), collapse = ', ')))
     }
 
     if (!is.null(group) && !group %in% names(dat)) {
@@ -298,6 +309,18 @@ alfam2 <- function(
     }
   }
 
+  if (check && is.null(time.incorp)) {
+    # Remove any incorporation columns if no incorporation time is provided (to avoid incorrect incorp effect on r3)
+    names.orig <- names(dat)
+    dat <- dat[, !(ii <- grepl(paste(incorp.names, collapse = '|'), names(dat)))]
+    # Note that dum is just for output (not calculations at this point, those already in dat)
+    dum <- dum[, !(jj <- grepl(paste(incorp.names, collapse = '|'), names(dum)))]
+    if (warn) {
+      warning(paste('Incorporation columns', paste(names.orig[ii], collapse = ', '), 'were dropped \n    because argument time.incorp is NULL\n    So there is no incorporation.\n    Set check = FALSE to not drop, but then check output.\n'))
+    }
+  }
+
+
   # Drop parameters for missing predictors
   p.orig <- pars
   ppnames <- gsub('\\.{1}[rf]{1}[0-9]$', '', names(pars))
@@ -361,7 +384,7 @@ alfam2 <- function(
 
   # Pare down to essential columns
   # No good reason for this anymore except debugging ease
-  dat <- dat[, c('__group', '__orig.order', time.name, app.name, group, '__add.row', '__f4', '__f0', '__r1', '__r2', '__r3', '__r5', '__drop.row', pass.col)]
+  dat <- dat[, c(group, '__group', '__orig.order', time.name, app.name, '__add.row', '__f4', '__f0', '__r1', '__r2', '__r3', '__r5', '__drop.row', pass.col)]
 
   # Sort required for gstart and gend to work, also ct loop
   # _orig.order used to sort back to original order later
