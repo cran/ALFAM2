@@ -59,7 +59,7 @@ alfam2(
 }
   \item{app.name}{
     name of column in \code{dat} that contains total ammonia nitrogen (TAN) application rate (usually kg/ha).
-    If omitted, function will return relative emission (fraction of applied TAN).
+    If omitted, function will return relative emission (fraction of applied TAN) and a warning (if \code{warn = TRUE}).
 }
   \item{time.name}{
     name of column in \code{dat} that contains cumulative time since manure was applied (h)
@@ -105,7 +105,7 @@ alfam2(
 }
   \item{warn}{
     set to \code{FALSE} to suppress some warnings and messages.
-    Doing so is useful for reducing console or report clutter, but use with caution, because problems with the input data or call could be missed.
+    Doing so is useful for reducing console or report clutter, but do so with caution, because problems with the input data or call could be missed.
     Even with \code{warn = FALSE} the \code{alfam2} function may make some substitutions in inputs (see vignette).
 }  
   \item{value}{
@@ -203,15 +203,15 @@ alfam2(
 }
 
 \references{
-  Hafner, S.D., Pacholski, A., Bittman, S., Carozzi, M., Chantigny, M., Genermont, S., Haeni, C., Hansen, M., Huijsmans, J., Kupper, T., Misselbrook, T., Neftel, A., Nyord, T., Sommer, S. 2019. A flexible semi-empirical model for estimating ammonia volatilization from field-applied slurry. \emph{Atmospheric Environment} \bold{199} 474-484. \doi{10.1016/j.atmosenv.2018.11.034}
+  Hafner S, Pedersen J, Fuss R, Kamp J, Dalby F, Amon B, Pacholski A, Adamsen A, Sommer S., 2025. Improved tools for estimation of ammonia emission from field-applied animal slurry: refinement of the ALFAM2 model and database. Atmospheric Environment. \doi{10.1016/j.atmosenv.2024.120910}
 
-  Hafner, S.D., Nyord, T., Sommer, S.G., Adamsen, A.P.S. 2021. Estimation of Danish emission factors for ammonia from field-applied liquid manure for 1980 to 2019. Danish Centre for Food and Agriculture, Aarhus University, Aarhus, Denmark. Report no. 2021-0251862. \url{https://pure.au.dk/portal/files/223538048/EFreport23092021.pdf}
+Hafner, S.D., Pacholski, A., Bittman, S., Carozzi, M., Chantigny, M., Genermont, S., Haeni, C., Hansen, M., Huijsmans, J., Kupper, T., Misselbrook, T., Neftel, A., Nyord, T., Sommer, S. 2019. A flexible semi-empirical model for estimating ammonia volatilization from field-applied slurry. \emph{Atmospheric Environment} \bold{199} 474-484. \doi{10.1016/j.atmosenv.2018.11.034}
 
-  Hafner, S.D., Kamp, J.N., Pedersen, J., 2024a. Experimental and model-based comparison of wind tunnel and inverse dispersion model measurement of ammonia emission from field-applied animal slurry. Agricultural and Forest Meteorology 344, 109790. \doi{10.1016/j.agrformet.2023.109790}
-  
-  Hafner S, Pedersen J, Fuss R, Kamp J, Dalby F, Amon B, Pacholski A, Adamsen A, Sommer S., 2024b. Improved tools for estimation of ammonia emission from field-applied animal slurry: refinement of the ALFAM2 model and database. Atmospheric Environment. \doi{10.1016/j.atmosenv.2024.120910}
+  Hafner, S.D., Nyord, T., Sommer, S.G., Adamsen, A.P.S. 2021. Estimation of Danish emission factors for ammonia from field-applied liquid manure for 1980 to 2019. Danish Centre for Food and Agriculture, Aarhus University, Aarhus, Denmark. Report no. 2021-0251862. 
 
-  The AlFAM2 project website. \url{https://projects.au.dk/alfam/}
+  Hafner, S.D., Kamp, J.N., Pedersen, J., 2024. Experimental and model-based comparison of wind tunnel and inverse dispersion model measurement of ammonia emission from field-applied animal slurry. Agricultural and Forest Meteorology 344, 109790. \doi{10.1016/j.agrformet.2023.109790}
+
+   The AlFAM2 project website. \url{https://projects.au.dk/alfam/}
 %% ~put references to the literature/web site here ~
 }
 \author{

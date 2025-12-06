@@ -1,11 +1,21 @@
 # NEWS for ALFAM2 R package
 
+# ALFAM2 v4.2.14 (5 Dec 2025)
+## Bug fixes
+From v4.2 `alfam2()` could be run without TAN application rate, but this did not work when the `conf.int` argument was used. That problem was fixed.
+
+## Documentation
+Minor change to description in DESCRIPTION and correction of year for most recent paper (2025).
+
 # ALFAM2 v4.2 (8 Nov 2024)
 
 ## Parameter correction
 The latest default parameter set was revised slightly to reflect new results after making corrections to the parameter estimation procedure.
 Resulting predictions will be slightly different than in v4.1.11 and earlier.
 In some cases the change may be around 1% of applied TAN, but is typically smaller.
+
+## New feature
+The `alfam2()` function can now be run without a column for TAN applcation rate (`app.name` argument). If omitted (or if default argument name is not present) only relative emission will be returned with a warning.
 
 ## Documentation
 Available default parameter sets are now documented in a separate help file.
